@@ -26,28 +26,28 @@ public class ProductoController {
         return productoService.findAll();
     }
 
-    @GetMapping("/producto/{id_categoria}")
+    @GetMapping("/{id_categoria}")
     public ResponseEntity<?> findByCategoria(@PathVariable int id_categoria){
         return productoService.findByCategoria(id_categoria);
     }
 
-    @GetMapping("/producto/{id_producto}")
+    @GetMapping("/{id_producto}")
     public ResponseEntity<Object> findById(@PathVariable int id_producto) {
         return productoService.findById(id_producto);
 
     }
 
-    @PostMapping("/producto/create")
+    @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody ProductoEntity producto){
         return productoService.create(producto);
     }
 
-    @PutMapping("/producto/update")
+    @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestBody ProductoEntity producto){
         return productoService.update(producto);
     }
 
-    @DeleteMapping("/producto/delete/{id_producto}")
+    @DeleteMapping("/delete/{id_producto}")
     public ResponseEntity<Object> delete(@PathVariable int id_producto){
         return productoService.delete(id_producto);
     }
