@@ -19,7 +19,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import ProductoComp from '@/components/Producto.vue'; // Asegúrate de tener la ruta correcta
+import ProductoComp from '@/components/ProductCard.vue'; 
 
 const route = useRoute();
 const productId = route.params.id; // Obtiene el ID del producto de la URL

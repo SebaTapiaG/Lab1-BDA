@@ -1,20 +1,23 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import ProductoView from '../views/Producto.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import ProductView from '../views/ProductView.vue';
 
-const routes = createRouter({
+const routes = [
+    {
+        path: '/',
+        name: 'Home',
+        component: HomeView,
+    },
+    {
+        path: '/producto/:id',
+        name: 'Product',
+        component: ProductView,
+    },
+];
+
+const router = createRouter({
     history: createWebHistory(),
-    routes: [
-        {
-            path : '/',
-            name : 'Home',
-            component : HomeView
-        },
-        {
-            path : '/producto/:id',
-            name : 'Producto',
-            component : ProductoView
-        }
-    ]
-})
+    routes,
+});
 
+export default router;
