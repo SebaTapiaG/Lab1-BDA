@@ -158,7 +158,7 @@ public class ClienteRepositoryImp implements ClienteRepository{
 
     @Override
     public ResponseEntity<Object> loginUser(String email, String password) {
-        if (!InputVerificationService.validateInput(name) || !InputVerificationService.validateInput(password)) {
+        if (!InputVerificationService.validateInput(email) || !InputVerificationService.validateInput(password)) {
             return ResponseEntity.badRequest().body("Error al iniciar sesión: caracteres no permitidos.");
         }
         try {
