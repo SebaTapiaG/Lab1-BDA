@@ -36,7 +36,7 @@ public class ClienteController {
 
     @GetMapping("/cliente/login")
     public ResponseEntity<Object> loginUser(@RequestBody ClienteEntity user) {
-        return clienteService.loginUser(user.getNombre(), user.getContrasena());
+        return clienteService.loginUser(user.getEmail(), user.getContrasena());
     }
 
     @PostMapping("/cliente/register")
