@@ -5,28 +5,41 @@
       <p>Encuentra los mejores productos al mejor precio</p>
     </header>
 
-    <section class="featured-products">
-      <h2>Productos Destacados</h2>
-      <div class="product-grid">
-        <ProductCard
-            v-for="product in featuredProducts"
-            :key="product.id"
-            :id="product.id"
-            :name="product.name"
-            :price="product.price"
-            :imgId="product.imgId"
-        />
+    <section class="categories">
+      <h2>Filtrar por Categorías</h2>
+      <div class="category-filter">
+        <label for="category-select">Selecciona una categoría:</label>
+        <select id="category-select" v-model="selectedCategory">
+          <option value="">-- Selecciona una categoría --</option>
+          <option v-for="category in categories" :key="category.id" :value="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+        <button @click="filterByCategory" class="filter-button">Filtrar</button>
       </div>
     </section>
 
-    <section class="categories">
-      <h2>Categorías</h2>
-      <div class="category-grid">
-        <CategoryCard
-            v-for="category in categories"
-            :key="category.id"
-            :name="category.name"
-            :imgId="category.imgId"
+    <section class="featured-products">
+      <h2>Productos</h2>
+
+      <!-- Mostrar mensaje si no hay productos -->
+      <div v-show="featuredProducts.length === 0" class="no-products">
+        No hay productos disponibles.
+      </div>
+
+      <!-- Mostrar productos si hay alguno -->
+      <div v-show="featuredProducts.length > 0" class="product-grid">
+        <ProductCard
+          v-for="product in featuredProducts"
+          :key="product.id"
+          :id="product.id"
+          :name="product.name"
+          :price="product.price"
+          :imgId="product.imgId"
+          :descripcion="product.description"
+          :stock="product.stock"
+          :estado="product.estado"
+          :categoriaId="product.categoriaId"
         />
       </div>
     </section>
@@ -34,26 +47,36 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import ProductCard from '@/components/ProductCard.vue';
-//import CategoryCard from '@/components/CategoryCard.vue';
+import axios from 'axios';
 
-const featuredProducts = ref([]);
-const categories = ref([]);
+const categories = ref([
+  { id: 1, name: 'Electrónica' },
+  { id: 2, name: 'Ropa' },
+  { id: 3, name: 'Hogar' },
+  { id: 4, name: 'Juguetes' },
+  { id: 5, name: 'Deportes' },
+]);
 
-async function fetchFeaturedProducts() {
-  featuredProducts.value = await fetch('/api/featured-products').then(res => res.json());
+const featuredProducts = ref([]); // Lista de productos filtrados
+const selectedCategory = ref(null); // Categoría seleccionada
+
+// Función para filtrar productos por categoría
+async function filterByCategory() {
+  if (selectedCategory.value) {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/producto/categoria/${selectedCategory.value}`);
+      featuredProducts.value = response.data;
+    } catch (error) {
+      console.error('Error al filtrar productos por categoría:', error);
+      featuredProducts.value = [];
+    }
+  } else {
+    // Si no se selecciona categoría, vaciar la lista de productos
+    featuredProducts.value = [];
+  }
 }
-
-async function fetchCategories() {
-  // Aquí realizarías la llamada a tu API para obtener categorías
-  categories.value = await fetch('/api/categories').then(res => res.json());
-}
-
-onMounted(() => {
-  fetchFeaturedProducts();
-  fetchCategories();
-});
 </script>
 
 <style scoped>
@@ -129,6 +152,33 @@ onMounted(() => {
 .product-grid p, .category-grid p {
   font-size: 1rem;
   color: #666;
+}
+.category-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.category-filter label {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.category-filter select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 250px;
+  text-align: center;
+}
+
+.no-products {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 20px;
 }
 
 @media (min-width: 768px) {

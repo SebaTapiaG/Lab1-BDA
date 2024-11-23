@@ -26,7 +26,7 @@ public class ProductoService {
         return productoRepository.findByNombre(nombre);
     }
 
-    public ResponseEntity <List<Object>> findByCategoria(int id_categoria) {
+    public ResponseEntity <List<ProductoEntity>> findByCategoria(int id_categoria) {
         return productoRepository.findByCategoria(id_categoria);
     }
 

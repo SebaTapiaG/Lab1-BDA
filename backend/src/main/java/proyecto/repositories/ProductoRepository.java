@@ -11,7 +11,7 @@ public interface ProductoRepository {
 
     public ResponseEntity<Object> findByNombre(String nombre);
 
-    ResponseEntity <List<Object>> findByCategoria(int id_categoria);
+    ResponseEntity <List<ProductoEntity>> findByCategoria(int id_categoria);
 
     ResponseEntity<Object> create(ProductoEntity producto);
     ResponseEntity<Object>  update(ProductoEntity producto);

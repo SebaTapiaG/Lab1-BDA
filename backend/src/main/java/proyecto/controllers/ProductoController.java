@@ -26,8 +26,8 @@ public class ProductoController {
         return productoService.findAll();
     }
 
-    @GetMapping("/{id_categoria}")
-    public ResponseEntity<?> findByCategoria(@PathVariable int id_categoria){
+    @GetMapping("/categoria/{id_categoria}")
+    public ResponseEntity<List<ProductoEntity>> findByCategoria(@PathVariable int id_categoria){
         return productoService.findByCategoria(id_categoria);
     }
 

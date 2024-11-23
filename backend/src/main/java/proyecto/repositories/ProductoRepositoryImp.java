@@ -77,17 +77,16 @@ public class ProductoRepositoryImp implements ProductoRepository {
     }
 
     @Override
-  //Retorna la lista de productos de una categoria
-   public ResponseEntity<List<Object>> findByCategoria(int id_categoria) {
+    public ResponseEntity<List<ProductoEntity>> findByCategoria(int id_categoria) {
         try (Connection conn = sql2o.open()) {
             List<ProductoEntity> productos = conn.createQuery("SELECT * FROM producto WHERE id_categoria = :id_categoria")
                     .addParameter("id_categoria", id_categoria)
                     .executeAndFetch(ProductoEntity.class);
-            List<Object> result = (List) productos;
+
             if (productos.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(productos);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
