@@ -1,5 +1,6 @@
 <script>
 import { auth } from "@/services/authService";
+import { Menubar } from "primevue";
 
 export default {
 	name: "App",
@@ -21,8 +22,30 @@ export default {
 };
 </script>
 
+<script setup>
+  import { ref } from "vue";
+	import { useRouter } from 'vue-router'; // Importa el router
+	const router = useRouter()
+
+
+	const items = ref([
+  	{ 
+			label: 'Home', 
+			icon: 'pi pi-home', 
+			command: () => { router.push("/") }
+		},
+  	{ label: 'Registrarme', 
+			command: () => { router.push("/register") } 
+		},
+		{ label: 'Iniciar sesión', 
+			command: () => { router.push("/login") } 
+		},
+]);
+</script>
+
 <template>
   <nav>
+		<Menubar :model="items"/>
     <router-link to="/">Home | </router-link>
     
     <!-- Mostrar Login y Register solo si el usuario no está logueado -->
