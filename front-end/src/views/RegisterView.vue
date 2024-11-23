@@ -102,8 +102,6 @@ async function register(){
 								direccion: state.direccion
             };
 
-    const body = JSON.stringify(userObj);
-
 		try {
         const response = await axios.post('http://localhost:8080/api/cliente/register', userObj)
         console.log(response.data)

@@ -14,10 +14,7 @@ export default {
     getUser() {
       this.user = sessionStorage.getItem('user');  // Recupera el usuario de sessionStorage
     },
-    logout() {
-      auth.logout();  // Llama al método logout del servicio
-      this.$router.push('/login');  // Redirige al login después de hacer logout
-    }
+    
   }
 };
 </script>
@@ -28,7 +25,7 @@ export default {
 	const router = useRouter()
 
 
-	const items = ref([
+	const itemsNotLogged = ref([
   	{ 
 			label: 'Home', 
 			icon: 'pi pi-home', 
@@ -41,19 +38,32 @@ export default {
 			command: () => { router.push("/login") } 
 		},
 ]);
+const itemsLogged= ref([
+  	{ 
+			label: 'Home', 
+			icon: 'pi pi-home', 
+			command: () => { router.push("/") }
+		},
+		{ 
+			label: 'Logout',  
+			command: () => { logout() }
+		},
+]);
+
+function logout() {
+      auth.logout();  // Llama al método logout del servicio
+      router.push('/');  // Redirige al home después de hacer logout
+    }
 </script>
 
 <template>
   <nav>
-		<Menubar :model="items"/>
-    <router-link to="/">Home | </router-link>
-    
-    <!-- Mostrar Login y Register solo si el usuario no está logueado -->
-    <router-link to="/login" v-if="!auth.isLogged()">Login | </router-link> 
-    <router-link to="/register" v-if="!auth.isLogged()">Register </router-link> 
-
-    <!-- Mostrar Logout solo si el usuario está logueado -->
-    <router-link to="/" @click="logout" v-if="auth.isLogged()">Logout | </router-link> 
+		<span v-if="!auth.isLogged()">
+		<Menubar :model="itemsNotLogged"/>
+		</span>
+		<span v-if="auth.isLogged()">
+		<Menubar :model="itemsLogged"/>
+		</span>
   </nav>
   <router-view/>
 </template>

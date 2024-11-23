@@ -34,7 +34,6 @@ class AuthService {
   }
 
   isLogged() {
-		console.log(this.state.logged)
     return this.state.logged;
   }
 
