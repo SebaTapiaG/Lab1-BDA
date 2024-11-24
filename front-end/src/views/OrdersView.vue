@@ -27,7 +27,6 @@
 	</div>
 </template>
 
-
 <script setup>
 import { ref, onMounted } from "vue";
 import { Button, Card } from "primevue";
@@ -49,9 +48,16 @@ onMounted(async () => {
 
 async function verDetalles(id_orden) {
 	try {
-		const response = await axios.get(`http://localhost:8080/api/detalle_orden/productos/${id_orden}`);
-		orderDetails.value = response.data; // Almacena los detalles obtenidos
-		selectedOrderId.value = id_orden; // Establece el id de la orden seleccionada
+        // Si ya está seleccionado, cerrarlo
+        if (selectedOrderId.value === id_orden) {
+            selectedOrderId.value = null; // Cerrar los detalles
+            orderDetails.value = []; // Limpiar los detalles
+            return;
+        }
+
+        const response = await axios.get(`http://localhost:8080/api/detalle_orden/productos/${id_orden}`);
+        orderDetails.value = response.data; // Almacena los detalles obtenidos
+        selectedOrderId.value = id_orden; // Establece el id de la orden seleccionada
 		
 	} catch (error) {
 		console.error('Error fetching order details:', error);
@@ -81,3 +87,9 @@ async function pagarOrden(index) {
 	}
 }
 </script>
+
+<style scoped>
+.order-details {
+    margin-top: 10px;
+}
+</style>
