@@ -30,6 +30,12 @@ public class ProductoService {
         return productoRepository.findByCategoria(id_categoria);
     }
 
+/*
+    public ResponseEntity<List<ProductoEntity>> getProductosMasComprados() {
+        return productoRepository.productosMasCompradosPorClientes();
+    }
+ */
+
     public ResponseEntity<Object> create(ProductoEntity producto) {
         return productoRepository.create(producto);
     }

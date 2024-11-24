@@ -42,6 +42,13 @@ public class ProductoController {
         return productoService.create(producto);
     }
 
+    /*
+    @GetMapping("/top")
+    public ResponseEntity<List<ProductoEntity>> getProductosMasComprados() {
+        return productoService.getProductosMasComprados();
+    }
+     */
+
     @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestBody ProductoEntity producto){
         return productoService.update(producto);

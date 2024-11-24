@@ -16,6 +16,7 @@ public interface ProductoRepository {
     ResponseEntity<Object> create(ProductoEntity producto);
     ResponseEntity<Object>  update(ProductoEntity producto);
     ResponseEntity<Object> delete(int id_producto);
+    //ResponseEntity<List<ProductoEntity>> productosMasCompradosPorClientes();
 
 
 }
