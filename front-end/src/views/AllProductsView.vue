@@ -15,17 +15,19 @@
 	  <!-- Mostrar Productos -->
 	  <div v-for="(product, index) in products" :key="product.id_producto" class="card">
 		<Card>
-		  <template #title>{{ product.nombre }}</template>
+		  <template #title>{{ product.nombre }} ({{ product.estado }})</template>
 		  <template #content>
 			<p>{{ product.descripcion }}</p>
 			<p>Precio: {{ product.precio }}$</p>
 			<p>Stock: {{ product.stock }} unidades</p>
-			<div>
-			  <label for="cantidad">Cantidad: </label>
-			  <InputNumber v-model="values[index]" inputId="minmax" :min="0" :max="product.stock" fluid />
-			</div>
-			<br />
-			<Button @click="agregarCarrito(product.id_producto, product.nombre, values[index], product.precio, index)">Agregar al carrito</Button>
+			<span v-if="product.stock  > 0">
+				<div>
+				  <label for="cantidad">Cantidad: </label>
+				  <InputNumber v-model="values[index]" inputId="minmax" :min="0" :max="product.stock" fluid />
+				</div>
+				<br />
+				<Button @click="agregarCarrito(product.id_producto, product.nombre, values[index], product.precio, index)">Agregar al carrito</Button>
+			</span>
 		  </template>
 		</Card>
 	  </div>

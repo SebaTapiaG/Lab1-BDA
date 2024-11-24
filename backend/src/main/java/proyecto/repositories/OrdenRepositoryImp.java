@@ -69,7 +69,6 @@ public class OrdenRepositoryImp implements OrdenRepository {
     @Override
     public ResponseEntity<Object> create(OrdenEntity orden) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        System.out.println(orden.getEstado());
 
         if (orden.getEstado().equals("pagada")) {
             try(Connection conn = sql2o.open()){
@@ -87,18 +86,15 @@ public class OrdenRepositoryImp implements OrdenRepository {
                         .addParameter("id_orden", orden.getId_orden())
                         .executeAndFetch(Detalle_OrdenEntity.class);
 
-                // Imprime "a" y luego actualiza los productos
-                System.out.println("a");
-
                 for (Integer i = 0; i < detalles.size(); i++) {
-                    System.out.println("idProducto: " + detalles.get(i).getId_producto());
-                    System.out.println("cantidad: " + detalles.get(i).getCantidad());
 
                     // Recupera producto
                     ProductoEntity producto = conn.createQuery("SELECT * FROM producto WHERE id_producto = :id_producto")
                             .addParameter("id_producto", detalles.get(i).getId_producto())
                             .executeAndFetchFirst(ProductoEntity.class);
                     producto.setStock(producto.getStock() - detalles.get(i).getCantidad());
+
+
 
                     // Actualiza stock
                     conn.createQuery("UPDATE producto SET nombre = :nombre, precio = :precio, stock = :stock, id_categoria = :id_categoria WHERE id_producto = :id_producto")
@@ -138,7 +134,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
     public ResponseEntity<Object> update(OrdenEntity orden) {
         // Verifica el estado correctamente usando .equals()
         if (orden.getEstado().equals("pagada")) {
-            try(Connection conn = sql2o.open()){
+            try(Connection conn = sql2o.open()) {
                 conn.createQuery("UPDATE orden SET fecha_orden = :fecha_orden, estado = :estado, total = :total, id_cliente = :id_cliente WHERE id_orden = :id_orden")
                         .addParameter("fecha_orden", orden.getFecha_orden())
                         .addParameter("total", orden.getTotal())
@@ -152,31 +148,51 @@ public class OrdenRepositoryImp implements OrdenRepository {
                         .addParameter("id_orden", orden.getId_orden())
                         .executeAndFetch(Detalle_OrdenEntity.class);
 
-                // Imprime "a" y luego actualiza los productos
-                System.out.println("a");
-
                 for (Integer i = 0; i < detalles.size(); i++) {
-                    System.out.println("idProducto: " + detalles.get(i).getId_producto());
-                    System.out.println("cantidad: " + detalles.get(i).getCantidad());
 
                     // Recupera producto
                     ProductoEntity producto = conn.createQuery("SELECT * FROM producto WHERE id_producto = :id_producto")
                             .addParameter("id_producto", detalles.get(i).getId_producto())
                             .executeAndFetchFirst(ProductoEntity.class);
-                    producto.setStock(producto.getStock() - detalles.get(i).getCantidad());
+                    Integer newStock = producto.getStock() - detalles.get(i).getCantidad();
 
-                    // Actualiza stock
-                    conn.createQuery("UPDATE producto SET nombre = :nombre, precio = :precio, stock = :stock, id_categoria = :id_categoria WHERE id_producto = :id_producto")
-                            .addParameter("nombre", producto.getNombre())
-                            .addParameter("precio", producto.getPrecio())
-                            .addParameter("stock", producto.getStock())
-                            .addParameter("id_categoria", producto.getId_categoria())
-                            .addParameter("id_producto", producto.getId_producto())
-                            .executeUpdate();
+                    if (newStock == 0) {
+                        producto.setEstado("agotado");
+                        producto.setStock(newStock);
+
+                        // Actualiza stock
+                        conn.createQuery("UPDATE producto SET nombre = :nombre, precio = :precio,estado = :estado, stock = :stock, id_categoria = :id_categoria WHERE id_producto = :id_producto")
+                                .addParameter("nombre", producto.getNombre())
+                                .addParameter("precio", producto.getPrecio())
+                                .addParameter("estado", producto.getEstado())
+                                .addParameter("stock", producto.getStock())
+                                .addParameter("id_categoria", producto.getId_categoria())
+                                .addParameter("id_producto", producto.getId_producto())
+                                .executeUpdate();
+                    } else if (newStock < 0) {
+                        OrdenRepositoryImp ordenRepositoryImp = new OrdenRepositoryImp();
+                        ordenRepositoryImp.delete(orden.getId_orden());
+
+                        for (Integer j = 0; j < i; j++) {
+                            ProductoEntity auxproducto = conn.createQuery("SELECT * FROM producto WHERE id_producto = :id_producto")
+                                    .addParameter("id_producto", detalles.get(j).getId_producto())
+                                    .executeAndFetchFirst(ProductoEntity.class);
+                            producto.setStock(producto.getStock() + detalles.get(i).getCantidad());
+
+                            conn.createQuery("UPDATE producto SET nombre = :nombre, precio = :precio, stock = :stock, id_categoria = :id_categoria WHERE id_producto = :id_producto")
+                                    .addParameter("nombre", auxproducto.getNombre())
+                                    .addParameter("precio", auxproducto.getPrecio())
+                                    .addParameter("stock", auxproducto.getStock())
+                                    .addParameter("id_categoria", auxproducto.getId_categoria())
+                                    .addParameter("id_producto", auxproducto.getId_producto())
+                                    .executeUpdate();
+                        }
+                        orden.setEstado("fallida");
+                        return ResponseEntity.ok(orden);
+                    }
                 }
-
                 return ResponseEntity.ok(orden);
-            } catch (Exception e) {
+            }catch (Exception e) {
                 e.printStackTrace();  // Para ayudar a depurar el error
                 return ResponseEntity.status(500).body(e.getMessage());
             }
