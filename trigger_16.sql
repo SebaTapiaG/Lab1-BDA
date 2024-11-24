@@ -1,28 +1,31 @@
 -- Crear o reemplazar la función del trigger
 CREATE OR REPLACE FUNCTION query_log()
-RETURNS TRIGGER AS $$
+    RETURNS TRIGGER AS $$
+DECLARE
+    actual_timestamp TIMESTAMP;
+    query_type TEXT;
 BEGIN
+    -- Obtener el timestamp actual
+    actual_timestamp := CURRENT_TIMESTAMP;
 
-    DECLARE date DATE; 
-    DECLARE time TIME;
-    DECLARE query_type TEXT;
+    -- Determinar el tipo de operación
+    IF TG_OP = 'INSERT' THEN
+        query_type := 'INSERT';
+    ELSIF TG_OP = 'UPDATE' THEN
+        query_type := 'UPDATE';
+    ELSIF TG_OP = 'DELETE' THEN
+        query_type := 'DELETE';
+    END IF;
 
-    BEGIN
-        date := CURRENT_DATE;
-	    time := CURRENT_TIME;
+    -- Insertar en la tabla Query_Log
+    INSERT INTO Query_Log (name, actual_timestamp, query_type, query_statement)
+    VALUES (CURRENT_USER, actual_timestamp, query_type, CURRENT_QUERY());
 
-        IF TG_OP == 'INSERT' THEN
-            query_type := 'INSERT'
-        ELSE IF TG_OP == 'UPDATE' THEN
-            query_type := 'UPDATE'
-        ELSE TG_OP == 'DELETE' THEN
-            query_type := 'DELETE'
-
-        INSERT INTO Query_Log (name, call_date, call_time, query_type, query_statement)
-	    VALUES (CURRENT_USER, date, time, query_tipe, CURRENT_QUERY());
-
+    RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 -- Crear el trigger asociado a la tabla Categoria
 CREATE TRIGGER query_log_categoria

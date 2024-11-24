@@ -49,10 +49,9 @@ CREATE TABLE Detalle_Orden (
 
 -- Tabla Query_Log
 CREATE TABLE Query_Log (
-    id_query_log SERIAL PRIMARY KEY,   -- Identificador único de la query_log 
+    id_query_log SERIAL PRIMARY KEY,   -- Identificador único de la query_log
     name VARCHAR(255) NOT NULL,
-    call_date DATE NOT NULL,
-    call_time TIME NOT NULL,
+    actual_timestamp TIMESTAMP NOT NULL,
     query_type CHAR(50) NOT NULL,
-	query_statement CHAR(200) NOT NULL,
+	query_statement TEXT NOT NULL
 );
