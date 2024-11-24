@@ -49,6 +49,10 @@ const itemsLogged= ref([
 			command: () => { router.push("/products") }
 		},
 		{ 
+			label: 'Mis ordenes',  
+			command: () => { router.push("/myOrders") }
+		},
+		{ 
 			label: 'Mi carrito',  
 			command: () => { router.push("/cart") }
 		},

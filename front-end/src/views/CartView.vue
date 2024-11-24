@@ -8,7 +8,9 @@
         </template>
     </Card>
 	</div>
-	<p>{{ precio }}</p>
+	<div class="text">
+		<p>Costo total: {{ precio }}</p>
+	</div>
 	<div class="button">
 		<Button @click="guardarOrden">Guardar orden</Button>
 	</div>
@@ -78,15 +80,15 @@ async function guardarOrden(){
 													cantidad: producto[2],
 													precio_unitario: producto[3] / producto[2]
 				}
-				console.log(detalle)
 				try{
 					const response2 = await axios.post('http://localhost:8080/api/detalle_orden/create', detalle)
-					console.log(response2.data)
 				}catch(error){
 					console.log(error)
 				}
 			}
+			sessionStorage.setItem('carrito',[])
 			console.log("Orden y detalles creados correctamente")
+
 		}catch(error){
 			console.log(error)
 		}
