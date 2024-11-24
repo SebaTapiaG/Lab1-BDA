@@ -1,5 +1,5 @@
 <template>
-	<div v-for="order in orders" class="card">
+	<div v-for="(order, index) in orders" class="card" :key="order.id_orden">
 		<Card>
         <template #title>N° de orden: {{order.id_orden}}</template>
         <template #content>
@@ -9,8 +9,8 @@
 						<Button @click="">Ver detalles</Button>
 						<br>
 						<br>
-						<span v-if="order.estado === 'pendiente'">
-							<Button @click="">Pagar</Button>
+						<span v-if="order.estado !== 'pendiente'">
+							<Button @click="pagarOrden(index)">Pagar</Button>
 						</span>	
         </template>
     </Card>
@@ -35,5 +35,25 @@ onMounted(async () => {
   }
 });
 
+async function pagarOrden(index){
+	const order = orders.value[index]
+	console.log(order)
+	const newOrder = {
+										id_orden: order.id_orden,
+										fecha_orden: order.fecha_orden,
+										estado: "pagada",
+										id_cliente: order.id_cliente,
+										total: order.total
+										}
+
+	try{
+		console.log(newOrder)
+		const response = await axios.put('http://localhost:8080/api/orden/update', newOrder)
+	}catch(error){
+		console.log(error)
+	}
+
+
+}
 
 </script>
