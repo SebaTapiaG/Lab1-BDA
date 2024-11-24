@@ -94,17 +94,20 @@ public class ProductoRepositoryImp implements ProductoRepository {
         }
     }
 
-
-
     @Override
     public ResponseEntity<List<ProductoMasCompradoDTO>> productosMasCompradosPorClientes() {
         String sql = "SELECT p.id_producto, p.nombre, SUM(d.cantidad) AS total_comprado " +
-                "FROM Cliente c " +
-                "JOIN Orden o ON c.id_cliente = o.id_cliente " +
-                "JOIN Detalle_Orden d ON o.id_orden = d.id_orden " +
-                "JOIN Producto p ON d.id_producto = p.id_producto " +
-                "WHERE o.fecha_orden >= CURRENT_DATE - INTERVAL '6 months' " +
-                "AND o.total > 1000 " +
+                "FROM Producto p " +
+                "JOIN Detalle_Orden d ON p.id_producto = d.id_producto " +
+                "JOIN Orden o ON d.id_orden = o.id_orden " +
+                "WHERE o.id_cliente IN (" +
+                "SELECT id_cliente " +
+                "FROM Orden " +
+                "WHERE estado = 'pagada' " +
+                "AND fecha_orden >= CURRENT_DATE - INTERVAL '6 months' " +
+                "GROUP BY id_cliente " +
+                "HAVING SUM(total) > 1000" +
+                ") " +
                 "GROUP BY p.id_producto, p.nombre " +
                 "ORDER BY total_comprado DESC";
 
@@ -113,14 +116,15 @@ public class ProductoRepositoryImp implements ProductoRepository {
                     .executeAndFetch(ProductoMasCompradoDTO.class);
 
             if (result.isEmpty()) {
-                return ResponseEntity.noContent().build();
+                return ResponseEntity.noContent().build(); // No content
             }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(result); // 200 OK
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(500).body(null); // 500 Internal Server Error
         }
     }
+
 
 
     @Override

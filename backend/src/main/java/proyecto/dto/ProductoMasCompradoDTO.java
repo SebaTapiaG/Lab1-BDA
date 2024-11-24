@@ -3,9 +3,9 @@ package proyecto.dto;
 public class ProductoMasCompradoDTO {
     private int id_producto;
     private String nombre;
-    private double total_comprado;
+    private int total_comprado;
 
-    public ProductoMasCompradoDTO(int id_producto, String nombre, double total_comprado) {
+    public ProductoMasCompradoDTO(int id_producto, String nombre, int total_comprado) {
         this.id_producto = id_producto;
         this.nombre = nombre;
         this.total_comprado = total_comprado;
@@ -27,11 +27,11 @@ public class ProductoMasCompradoDTO {
         this.nombre = nombre;
     }
 
-    public double getTotal_comprado() {
+    public int getTotal_comprado() {
         return total_comprado;
     }
 
-    public void setTotal_comprado(double total_comprado) {
+    public void setTotal_comprado(int total_comprado) {
         this.total_comprado = total_comprado;
     }
 }
