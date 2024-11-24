@@ -45,6 +45,14 @@ const itemsLogged= ref([
 			command: () => { router.push("/") }
 		},
 		{ 
+			label: 'Productos',  
+			command: () => { router.push("/products") }
+		},
+		{ 
+			label: 'Mi carrito',  
+			command: () => { router.push("/cart") }
+		},
+		{ 
 			label: 'Logout',  
 			command: () => { logout() }
 		},

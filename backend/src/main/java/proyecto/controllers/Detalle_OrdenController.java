@@ -30,7 +30,7 @@ public class Detalle_OrdenController {
         return detalle_ordenService.findById(id_detalle_orden);
     }
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody Detalle_OrdenEntity detalle_orden) {
         return detalle_ordenService.create(detalle_orden);
     }

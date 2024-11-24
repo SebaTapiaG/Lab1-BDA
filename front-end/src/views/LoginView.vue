@@ -57,7 +57,8 @@ async function login(){
 		try {
         const response = await axios.post('http://localhost:8080/api/cliente/login', userObj);
         const token = response.data;
-				const userId = jwtDecode(token).id
+				console.log(jwtDecode(token))
+				const userId = jwtDecode(token).user_id
 				auth.login(userId, token)
 				router.push("/")
     } catch (error) {

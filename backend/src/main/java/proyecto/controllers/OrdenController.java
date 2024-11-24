@@ -29,9 +29,10 @@ public class OrdenController {
         return ordenService.findById(id_orden);
     }
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody OrdenEntity orden) {
-        return ordenService.create(orden);
+       System.out.println(orden);
+       return ordenService.create(orden);
     }
 
     @PutMapping("/update")

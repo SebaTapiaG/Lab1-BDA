@@ -15,6 +15,7 @@ class AuthService {
     sessionStorage.setItem("userId", userId);
     sessionStorage.setItem("logged", "1");
     sessionStorage.setItem("user", user);
+		sessionStorage.setItem('carrito', [])
 
     // Update reactive state
     this.state.userId = userId;
@@ -26,6 +27,7 @@ class AuthService {
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("user");
     sessionStorage.setItem("logged", "0");
+		sessionStorage.clear()
 
     // Update reactive state
     this.state.userId = null;

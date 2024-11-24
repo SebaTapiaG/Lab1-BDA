@@ -7,6 +7,8 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import proyecto.entities.OrdenEntity;
 
+import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -64,14 +66,21 @@ public class OrdenRepositoryImp implements OrdenRepository {
 
     @Override
     public ResponseEntity<Object> create(OrdenEntity orden) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
         try(Connection conn = sql2o.open()){
-            conn.createQuery("INSERT INTO orden (fecha, total, id_cliente) VALUES (:fecha, :total, :id_cliente)", true)
-                    .addParameter("fecha", orden.getFecha_orden())
+            Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_cliente) VALUES (:fecha_orden, :total,:estado, :id_cliente)", true)
+                    .addParameter("fecha_orden", timestamp)
                     .addParameter("total", orden.getTotal())
+                    .addParameter("estado", orden.getEstado())
                     .addParameter("id_cliente", orden.getId_cliente())
-                    .executeUpdate();
+                    .executeUpdate().getKey();
+            orden.setId_orden(ordenId);
+            orden.setFecha_orden(timestamp);
+
             return ResponseEntity.ok(orden);
         } catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
