@@ -6,9 +6,19 @@
 						<p>Fecha: {{ order.fecha_orden }}</p>
 						<p>Estado: {{ order.estado }}</p>
 						<p>Costo total: {{ order.total }}$</p>
-						<Button @click="">Ver detalles</Button>
-						<br>
-						<br>
+						<Button @click="verDetalles(order.id_orden)">Ver detalles</Button>
+
+						<!-- Sección para mostrar los detalles de la orden -->
+						<div v-if="selectedOrderId === order.id_orden" class="order-details">
+							<h4>Detalles de la Orden:</h4>
+							<ul>
+								<li v-for="(detalle, idx) in orderDetails" :key="idx">
+									{{ detalle.cantidad }} x {{ detalle.nombre }} - Precio total: {{ (detalle.cantidad * detalle.precio_unitario).toFixed(2) }}$
+								</li>
+							</ul>
+						</div>
+
+						<br><br>
 						<span v-if="order.estado === 'pendiente'">
 							<Button @click="pagarOrden(index)">Pagar</Button>
 						</span>	
@@ -17,48 +27,57 @@
 	</div>
 </template>
 
+
 <script setup>
 import { ref, onMounted } from "vue";
-import { Button, InputNumber, Card } from "primevue";
-import { jwtDecode } from "jwt-decode";
+import { Button, Card } from "primevue";
 import axios from 'axios';
 
 const orders = ref([]);
+const orderDetails = ref([]); // Para almacenar los detalles de la orden
+const selectedOrderId = ref(null); // Para identificar qué orden está seleccionada
 
 onMounted(async () => {
   try {
-		const id = sessionStorage.getItem('userId')
-    const response = await axios.get(`http://localhost:8080/api/orden/findByCliente/${id}`)
-		orders.value = response.data
+		const id = sessionStorage.getItem('userId');
+    const response = await axios.get(`http://localhost:8080/api/orden/findByCliente/${id}`);
+		orders.value = response.data;
   } catch (error) {
     console.error('Error fetching products:', error);
   }
 });
 
-async function pagarOrden(index){
-	const order = orders.value[index]
-	console.log(order)
+async function verDetalles(id_orden) {
+	try {
+		const response = await axios.get(`http://localhost:8080/api/detalle_orden/productos/${id_orden}`);
+		orderDetails.value = response.data; // Almacena los detalles obtenidos
+		selectedOrderId.value = id_orden; // Establece el id de la orden seleccionada
+		
+	} catch (error) {
+		console.error('Error fetching order details:', error);
+		window.alert("Error al obtener los detalles de la orden.");
+	}
+}
+
+async function pagarOrden(index) {
+	const order = orders.value[index];
 	const newOrder = {
 										id_orden: order.id_orden,
 										fecha_orden: order.fecha_orden,
 										estado: "pagada",
 										id_cliente: order.id_cliente,
 										total: order.total
-										}
+									 };
 
-	try{
-		console.log(newOrder)
-		const response = await axios.put('http://localhost:8080/api/orden/update', newOrder)
-		if(response.data.estado === "fallida"){
-			window.alert("No se puede realizar esta compra, por lo tanto se eliminara la orden")
-			window.location.reload()
+	try {
+		const response = await axios.put('http://localhost:8080/api/orden/update', newOrder);
+		if (response.data.estado === "fallida") {
+			window.alert("No se puede realizar esta compra, por lo tanto se eliminara la orden");
+			window.location.reload();
 		}
 		
-	}catch(error){
-		console.log(error)
+	} catch (error) {
+		console.log(error);
 	}
-
-
 }
-
 </script>
