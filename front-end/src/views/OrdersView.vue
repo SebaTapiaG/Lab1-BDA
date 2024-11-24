@@ -9,7 +9,7 @@
 						<Button @click="">Ver detalles</Button>
 						<br>
 						<br>
-						<span v-if="order.estado !== 'pendiente'">
+						<span v-if="order.estado === 'pendiente'">
 							<Button @click="pagarOrden(index)">Pagar</Button>
 						</span>	
         </template>
@@ -49,6 +49,11 @@ async function pagarOrden(index){
 	try{
 		console.log(newOrder)
 		const response = await axios.put('http://localhost:8080/api/orden/update', newOrder)
+		if(response.data.estado === "fallida"){
+			window.alert("No se puede realizar esta compra, por lo tanto se eliminara la orden")
+			window.location.reload()
+		}
+		
 	}catch(error){
 		console.log(error)
 	}
