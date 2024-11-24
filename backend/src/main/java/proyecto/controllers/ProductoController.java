@@ -2,6 +2,7 @@ package proyecto.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import proyecto.dto.ProductoMasCompradoDTO;
 import proyecto.entities.ProductoEntity;
 import proyecto.service.ProductoService;
 import proyecto.service.CategoriaService;
@@ -42,12 +43,12 @@ public class ProductoController {
         return productoService.create(producto);
     }
 
-    /*
+
     @GetMapping("/top")
-    public ResponseEntity<List<ProductoEntity>> getProductosMasComprados() {
+    public ResponseEntity<List<ProductoMasCompradoDTO>> getProductosMasComprados() {
         return productoService.getProductosMasComprados();
     }
-     */
+     
 
     @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestBody ProductoEntity producto){

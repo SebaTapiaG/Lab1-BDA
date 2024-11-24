@@ -2,6 +2,7 @@ package proyecto.repositories;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import proyecto.dto.ProductoMasCompradoDTO;
 import proyecto.entities.ProductoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -93,10 +94,10 @@ public class ProductoRepositoryImp implements ProductoRepository {
         }
     }
 
-    /*
+
 
     @Override
-    public ResponseEntity<List<ProductoEntity>> productosMasCompradosPorClientes() {
+    public ResponseEntity<List<ProductoMasCompradoDTO>> productosMasCompradosPorClientes() {
         String sql = "SELECT p.id_producto, p.nombre, SUM(d.cantidad) AS total_comprado " +
                 "FROM Cliente c " +
                 "JOIN Orden o ON c.id_cliente = o.id_cliente " +
@@ -108,19 +109,19 @@ public class ProductoRepositoryImp implements ProductoRepository {
                 "ORDER BY total_comprado DESC";
 
         try (Connection conn = sql2o.open()) {
-            List<ProductoEntity> result = conn.createQuery(sql)
-                    .executeAndFetch(ProductoEntity.class);
+            List<ProductoMasCompradoDTO> result = conn.createQuery(sql)
+                    .executeAndFetch(ProductoMasCompradoDTO.class);
 
             if (result.isEmpty()) {
-                return ResponseEntity.noContent().build(); // 204 No Content si no hay resultados
+                return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(result); // 200 OK con los datos
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(null); // 500 Internal Server Error
+            return ResponseEntity.status(500).body(null); 
         }
     }
-*/
+
 
     @Override
     public ResponseEntity<Object> create(ProductoEntity producto) {

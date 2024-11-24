@@ -1,5 +1,6 @@
 package proyecto.repositories;
 import org.springframework.http.ResponseEntity;
+import proyecto.dto.ProductoMasCompradoDTO;
 import proyecto.entities.ProductoEntity;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface ProductoRepository {
     ResponseEntity<Object> create(ProductoEntity producto);
     ResponseEntity<Object>  update(ProductoEntity producto);
     ResponseEntity<Object> delete(int id_producto);
-    //ResponseEntity<List<ProductoEntity>> productosMasCompradosPorClientes();
+    ResponseEntity<List<ProductoMasCompradoDTO>> productosMasCompradosPorClientes();
 
 
 }
