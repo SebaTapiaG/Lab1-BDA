@@ -118,7 +118,7 @@ public class ProductoRepositoryImp implements ProductoRepository {
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(null); 
+            return ResponseEntity.status(500).body(null);
         }
     }
 
