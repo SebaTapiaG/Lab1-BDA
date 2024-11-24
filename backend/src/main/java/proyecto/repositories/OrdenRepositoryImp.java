@@ -189,23 +189,13 @@ public class OrdenRepositoryImp implements OrdenRepository {
                         }
                         orden.setEstado("fallida");
                         return ResponseEntity.ok(orden);
-                    } else if (newStock < 0) {
+                    } else if (producto.getStock() < 0) {
                         OrdenRepositoryImp ordenRepositoryImp = new OrdenRepositoryImp();
                         ordenRepositoryImp.delete(orden.getId_orden());
 
                         for (Integer j = 0; j < i; j++) {
-                            ProductoEntity auxproducto = conn.createQuery("SELECT * FROM producto WHERE id_producto = :id_producto")
-                                    .addParameter("id_producto", detalles.get(j).getId_producto())
-                                    .executeAndFetchFirst(ProductoEntity.class);
-                            producto.setStock(producto.getStock() + detalles.get(i).getCantidad());
-
-                            conn.createQuery("UPDATE producto SET nombre = :nombre, precio = :precio, stock = :stock, id_categoria = :id_categoria WHERE id_producto = :id_producto")
-                                    .addParameter("nombre", auxproducto.getNombre())
-                                    .addParameter("precio", auxproducto.getPrecio())
-                                    .addParameter("stock", auxproducto.getStock())
-                                    .addParameter("id_categoria", auxproducto.getId_categoria())
-                                    .addParameter("id_producto", auxproducto.getId_producto())
-                                    .executeUpdate();
+                            Detalle_OrdenRepositoryImp detalleRepositoryImp = new Detalle_OrdenRepositoryImp();
+                            detalleRepositoryImp.delete(detalles.get(j).getId_orden());
                         }
                         orden.setEstado("fallida");
                         return ResponseEntity.ok(orden);
