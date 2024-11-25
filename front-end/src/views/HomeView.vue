@@ -45,7 +45,6 @@ onMounted(async () => {
   padding: 20px;
   font-family: 'Arial', sans-serif;
   color: #333;
-  background-color: #f9f9f9; 
 }
 
 .hero {
