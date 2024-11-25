@@ -68,20 +68,24 @@ async function verDetalles(id_orden) {
 async function pagarOrden(index) {
 	const order = orders.value[index];
 	const newOrder = {
-										id_orden: order.id_orden,
-										fecha_orden: order.fecha_orden,
-										estado: "pagada",
-										id_cliente: order.id_cliente,
-										total: order.total
-									 };
+		id_orden: order.id_orden,
+		fecha_orden: order.fecha_orden,
+		estado: "pagada",
+		id_cliente: order.id_cliente,
+		total: order.total
+	};
 
 	try {
 		const response = await axios.put('http://localhost:8080/api/orden/update', newOrder);
 		if (response.data.estado === "fallida") {
-			window.alert("No se puede realizar esta compra, por lo tanto se eliminara la orden");
-			window.location.reload();
+			window.alert("No se puede realizar esta compra, por lo tanto se eliminará la orden");
+			window.location.reload();  // Recarga la página si la compra falla
+		} else {
+			// Si la orden fue pagada con éxito, mostrar la alerta
+			window.alert("Pagado con éxito");
+			// Recargar la página para mostrar la nueva información
+			window.location.reload();  // Recarga la página después del pago
 		}
-		
 	} catch (error) {
 		console.log(error);
 	}
