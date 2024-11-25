@@ -8,13 +8,13 @@ RETURNS TABLE(
 BEGIN
     RETURN QUERY
     SELECT 
-        name AS user_name,               -- Nombre del usuario
-        query_type,                      -- Tipo de consulta
-        query_statement,                 -- Declaración SQL
-        COUNT(*) AS query_count          -- Cantidad de veces que la consulta fue ejecutada
-    FROM Query_Log
-    WHERE query_type IN ('INSERT', 'UPDATE', 'DELETE') -- Filtrar solo consultas relevantes
-    GROUP BY name, query_type, query_statement         -- Agrupar por usuario, tipo y consulta
-    ORDER BY query_count DESC;                         -- Ordenar por número de consultas
+        ql.name AS user_name,                -- Nombre del usuario
+        ql.query_type AS query_type,         -- Tipo de consulta
+        ql.query_statement AS query_statement, -- Declaración SQL
+        COUNT(*)::INTEGER AS query_count     -- Convertir a INTEGER
+    FROM Query_Log ql
+    WHERE ql.query_type IN ('INSERT', 'UPDATE', 'DELETE') -- Filtrar solo consultas relevantes
+    GROUP BY ql.name, ql.query_type, ql.query_statement   -- Agrupar por usuario, tipo y consulta
+    ORDER BY query_count DESC;                           -- Ordenar por número de consultas
 END;
 $$ LANGUAGE plpgsql;

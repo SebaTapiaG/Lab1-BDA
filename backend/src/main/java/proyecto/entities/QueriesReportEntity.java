@@ -2,51 +2,51 @@ package proyecto.entities;
 
 public class QueriesReportEntity {
 
-    private String userName;
+    private String user_name;
 
-    private String queryType;
+    private String query_type;
 
-    private String queryStatement;
+    private String query_statement;
 
-    private Integer queryCount;
+    private Integer query_count;
 
-    public QueriesReportEntity(String userName, String queryType, String queryStatement, Integer queryCount) {
-        this.userName = userName;
-        this.queryType = queryType;
-        this.queryStatement = queryStatement;
-        this.queryCount = queryCount;
+    public QueriesReportEntity(String user_name, String query_type, String query_statement, Integer query_count) {
+        this.user_name = user_name;
+        this.query_type = query_type;
+        this.query_statement = query_statement;
+        this.query_count = query_count;
     }
 
     // Getters y Setters
     public String getUserName() {
-        return userName;
+        return user_name;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.user_name = userName;
     }
 
     public String getQueryType() {
-        return queryType;
+        return query_type;
     }
 
     public void setQueryType(String queryType) {
-        this.queryType = queryType;
+        this.query_type = queryType;
     }
 
     public String getQueryStatement() {
-        return queryStatement;
+        return query_statement;
     }
 
     public void setQueryStatement(String queryStatement) {
-        this.queryStatement = queryStatement;
+        this.query_statement = queryStatement;
     }
 
     public Integer getQueryCount() {
-        return queryCount;
+        return query_count;
     }
 
     public void setQueryCount(Integer queryCount) {
-        this.queryCount = queryCount;
+        this.query_count = queryCount;
     }
 }

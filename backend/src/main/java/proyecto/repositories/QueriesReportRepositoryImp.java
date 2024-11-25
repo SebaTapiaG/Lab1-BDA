@@ -19,7 +19,7 @@ public class QueriesReportRepositoryImp implements QueriesReportRepository {
     @Override
     public ResponseEntity<List<QueriesReportEntity>> getQueriesReport() {
         try (Connection conn = sql2o.open()) {
-            List<QueriesReportEntity> queriesReports = conn.createQuery("CALL get_queries_report()", true)
+            List<QueriesReportEntity> queriesReports = conn.createQuery("SELECT * FROM get_queries_report()")
                     .executeAndFetch(QueriesReportEntity.class);
 
             return ResponseEntity.ok(queriesReports);
