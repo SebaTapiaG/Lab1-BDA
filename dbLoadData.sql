@@ -24,7 +24,7 @@ INSERT INTO Producto (nombre, descripcion, precio, stock, estado, id_categoria) 
 INSERT INTO Orden (fecha_orden, estado, id_cliente, total) VALUES
                                                                ('2024-11-01 14:30:00', 'no completada', 1, 749.98), -- Orden aún no completada
                                                                ('2024-11-02 10:15:00', 'completada', 2, 29.99),     -- Orden completada
-                                                               ('2024-11-03 18:45:00', 'no completada', 1, 499.99);    -- Orden completada
+                                                               ('2024-11-03 18:45:00', 'no completada', 1, 29.99);    -- Orden completada
 
 -- Poblar Detalle_Orden
 INSERT INTO Detalle_Orden (id_orden, id_producto, cantidad, precio_unitario, estado) VALUES

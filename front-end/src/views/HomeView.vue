@@ -69,6 +69,7 @@ onMounted(async () => {
 
 .top-products {
   margin-top: 40px;
+  color: white;
 }
 
 .top-products h2 {
@@ -85,7 +86,6 @@ onMounted(async () => {
   padding: 10px;
   border: 1px solid #ddd;
   margin-bottom: 10px;
-  background-color: #fff;
   border-radius: 5px;
 }
 
