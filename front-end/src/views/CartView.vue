@@ -168,6 +168,8 @@ async function comprarOrden() {
 	        }
 	    }
 
+			const update = await axios.put('http://localhost:8080/api/orden/update', response.data);
+
 	    sessionStorage.setItem('carrito', []);
 	    alert("Orden creada correctamente");
 	    window.location.reload(); // Recargar la página
