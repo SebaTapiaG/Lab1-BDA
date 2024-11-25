@@ -15,13 +15,17 @@ public class Detalle_OrdenEntity {
     private int id_producto;
     private int cantidad;
     private double precio_unitario;
+    private String estado;
 
-    public Detalle_OrdenEntity(int id_detalle, int id_orden, int id_producto, int cantidad, double precio_unitario) {
+    public Detalle_OrdenEntity(int id_detalle, int id_orden,
+                               int id_producto, int cantidad,
+                               double precio_unitario, String estado) {
         this.id_detalle = id_detalle;
         this.id_orden = id_orden;
         this.id_producto = id_producto;
         this.cantidad = cantidad;
         this.precio_unitario = precio_unitario;
+        this.estado = estado;
     }
 
     public int getId_detalle() {
@@ -62,5 +66,13 @@ public class Detalle_OrdenEntity {
 
     public void setPrecio_unitario(double precio_unitario) {
         this.precio_unitario = precio_unitario;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }
