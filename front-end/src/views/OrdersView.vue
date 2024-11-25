@@ -14,6 +14,7 @@
 							<ul>
 								<li v-for="(detalle, idx) in orderDetails" :key="idx">
 									{{ detalle.cantidad }} x {{ detalle.nombre }} - Precio total: {{ (detalle.cantidad * detalle.precio_unitario).toFixed(2) }}$
+									
 								</li>
 							</ul>
 						</div>
