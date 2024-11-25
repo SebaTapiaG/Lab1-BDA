@@ -28,3 +28,5 @@ CREATE TRIGGER status_orden_trigger
 AFTER INSERT OR UPDATE OR DELETE ON Detalle_Orden
 FOR EACH ROW
 EXECUTE FUNCTION status_trigger();
+
+

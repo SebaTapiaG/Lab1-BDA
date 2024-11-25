@@ -18,6 +18,6 @@ $$ LANGUAGE plpgsql;
 
 -- Crear el trigger asociado a la tabla Detalle_Orden
 CREATE TRIGGER trigger_validar_stock
-BEFORE INSERT ON Detalle_Orden
+BEFORE INSERT ON Detalle_Orden 
 FOR EACH ROW
 EXECUTE FUNCTION validar_stock();

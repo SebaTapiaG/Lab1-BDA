@@ -105,6 +105,7 @@ async function guardarOrden() {
                 id_orden: response.data.id_orden,
                 id_producto: producto[0],
                 cantidad: producto[2],
+								estado: "pendiente",
                 precio_unitario: producto[3] / producto[2],
             };
 
@@ -156,6 +157,7 @@ async function comprarOrden() {
 	            id_orden: response.data.id_orden,
 	            id_producto: producto[0],
 	            cantidad: producto[2],
+							estado: "enviado",
 	            precio_unitario: producto[3] / producto[2],
 	        };
 
@@ -168,7 +170,6 @@ async function comprarOrden() {
 	        }
 	    }
 
-			const update = await axios.put('http://localhost:8080/api/orden/update', response.data);
 
 	    sessionStorage.setItem('carrito', []);
 	    alert("Orden creada correctamente");

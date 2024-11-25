@@ -50,9 +50,10 @@ public class Detalle_OrdenRepositoryImp implements Detalle_OrdenRepository{
     @Override
     public ResponseEntity<Object> create(Detalle_OrdenEntity detalle_orden) {
         try(Connection conn = sql2o.open()){
-            Integer id = (Integer) conn.createQuery("INSERT INTO detalle_orden (cantidad, precio_unitario, id_producto, id_orden) VALUES (:cantidad, :precio_unitario, :id_producto, :id_orden)", true)
+            Integer id = (Integer) conn.createQuery("INSERT INTO detalle_orden (cantidad, precio_unitario,estado, id_producto, id_orden) VALUES (:cantidad, :precio_unitario,:estado, :id_producto, :id_orden)", true)
                     .addParameter("cantidad", detalle_orden.getCantidad())
                     .addParameter("precio_unitario", detalle_orden.getPrecio_unitario())
+                    .addParameter("estado", detalle_orden.getEstado())
                     .addParameter("id_producto", detalle_orden.getId_producto())
                     .addParameter("id_orden", detalle_orden.getId_orden())
                     .executeUpdate().getKey();
@@ -66,9 +67,10 @@ public class Detalle_OrdenRepositoryImp implements Detalle_OrdenRepository{
     @Override
     public ResponseEntity<Object> update(Detalle_OrdenEntity detalle_orden) {
         try(Connection conn = sql2o.open()){
-            conn.createQuery("UPDATE detalle_orden SET cantidad = :cantidad, precio = :precio, id_producto = :id_producto, id_orden = :id_orden WHERE id_detalle_orden = :id_detalle_orden")
+            conn.createQuery("UPDATE detalle_orden SET cantidad = :cantidad, precio_unitario = :precio_unitario, id_producto = :id_producto, id_orden = :id_orden WHERE id_detalle_orden = :id_detalle_orden")
                     .addParameter("cantidad", detalle_orden.getCantidad())
-                    .addParameter("precio", detalle_orden.getPrecio_unitario())
+                    .addParameter("precio_unitario", detalle_orden.getPrecio_unitario())
+                    .addParameter("estado", detalle_orden.getEstado())
                     .addParameter("id_producto", detalle_orden.getId_producto())
                     .addParameter("id_orden", detalle_orden.getId_orden())
                     .executeUpdate();
