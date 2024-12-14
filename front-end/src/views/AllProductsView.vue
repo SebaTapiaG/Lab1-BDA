@@ -20,6 +20,7 @@
 			<p>{{ product.descripcion }}</p>
 			<p>Precio: {{ product.precio }}$</p>
 			<p>Stock: {{ product.stock }} unidades</p>
+      
 			<span v-if="product.stock > 0">
 				<div>
 				  <label for="cantidad">Cantidad: </label>
